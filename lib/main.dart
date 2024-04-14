@@ -46,26 +46,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _showTodoDetails(BuildContext context, Pokemon pokemon) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        double screen_width = MediaQuery.of(context).size.width;
-        return Container(
-          width: screen_width,
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('ID: ${pokemon.id}'),
-              Text('Name: ${pokemon.name}'),
-              Text('Height: ${pokemon.height}')
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showTodoDetails(BuildContext context, Pokemon pokemon) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       double screen_width = MediaQuery.of(context).size.width;
+  //       return Container(
+  //         width: screen_width,
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text('ID: ${pokemon.id}'),
+  //             Text('Name: ${pokemon.name}'),
+  //             Text('Height: ${pokemon.height}')
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Consumer<PokemonProvider>(
           builder: (context, value, child) {
             if (value.isLoading) {
-              return const CircularProgressIndicator();
+              return Center(child: const CircularProgressIndicator());
             } else {
               final pokemons = value.pokemons;
               return GridView.count(
@@ -153,6 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             bg_color = Colors.white; // Default color
                             break;
                         }
+                    pokemon.bg_color=bg_color;
+
 
 
                     return GestureDetector(
@@ -168,64 +170,76 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       },
 
-                      child: Card(
-                        elevation: 20,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-                        clipBehavior: Clip.antiAlias,
-                        color: bg_color,
-                        child: AspectRatio(
-                          aspectRatio: 10 / 2,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.zero  ,
-                                  title:Container(
-                                    width: double.infinity,
-                                    height: 20,
-                                    child: Text(
-                                      pokemon.name,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.fromLTRB(15,0,15,0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: bg_color.withOpacity(0.2)),
-                                        color: bg_color.withOpacity(0.9),
-                                        borderRadius: BorderRadius.circular(30)
-                                      ),
+                      child: AspectRatio(
+                        aspectRatio: 4/2,
+                        child: Card(
+                          
+                          
+                          elevation: 20,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                          clipBehavior: Clip.antiAlias,
+                          color: bg_color,
+                          child: Container(
+                            padding: EdgeInsets.zero,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero  ,
+                                    title:Container(
                                       width: double.infinity,
                                       height: 20,
                                       child: Text(
-                                        pokemon.type.first,
+                                        pokemon.name,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Image.network(
-                                        pokemon.img,
-                                        fit: BoxFit.cover,
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.fromLTRB(15,0,15,0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.white),
+                                          color: bg_color.withOpacity(0.9),
+                                          borderRadius: BorderRadius.circular(30)
+                                        ),
+                                        width: double.infinity,
+                                        height: 20,
+                                        child: Text(
+                                          pokemon.type.first,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 35),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Hero(
+                                        tag: 'pokemonImage_${pokemon.id}', // Unique tag for each image
+                                        child: Image.network(
+                                          pokemon.img,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Center(child: const CircularProgressIndicator());
+                                          },
+                                        ),
+                                      ),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

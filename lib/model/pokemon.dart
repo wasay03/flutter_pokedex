@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Pokemon {
   final int id;
   final String num;
@@ -16,6 +18,7 @@ class Pokemon {
   final List<Evolution>? prevEvolution;
   final List<Evolution>? nextEvolution;
   final List<String> weaknesses;
+  Color bg_color=Colors.white;
 
   Pokemon({
     required this.id,
@@ -35,6 +38,7 @@ class Pokemon {
     this.prevEvolution,
     this.nextEvolution,
     required this.weaknesses,
+  
   });
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
